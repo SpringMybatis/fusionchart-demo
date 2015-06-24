@@ -96,4 +96,42 @@
 
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<!-- 开发属性->连接本地数据库 -->
+			<id>dev_local</id>
+			<!-- 激活策略 -->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- 本地tomcat发布目录 -->
+				<dir.tomcat.deploy>D:/tomcat-6.0/webapps</dir.tomcat.deploy>
+				<!-- 日志存放路径 -->
+				<dir.log.root>D:/logs/volteplatform</dir.log.root>
+				<env>dev_local</env>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+				<plugins>
+					<!-- 打包放入tomcat wepapps目录下 -->
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<outputDirectory>${dir.tomcat.deploy}</outputDirectory>
+							<warName>fusionchart</warName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+
 </project>

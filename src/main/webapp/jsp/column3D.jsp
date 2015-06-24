@@ -17,17 +17,36 @@
 	function showChart() {
 		var paramsObj = {};
 		paramsObj.chartFlag = true;
+		paramsObj.graphType = "18";
 		Ext.Ajax.request({
 			url : "../chartDemo.do",
 			params : paramsObj,
 			method : 'POST',
 			timeout : 1800000,
 			success : function(response, options) {
-				if (true) {
-					alert("success");
-				} else if (obj.actionStatus == 'FAIL') {
-					Ext.Msg.alert('系统提示', '查询数据异常!');
-				}
+				var obj = Ext.decode(response.responseText);
+				var graphData =obj.graph;
+				console.info(graphData);
+				var chart=null;
+             	switch(paramsObj.graphType){
+             		case "1" : 
+             			chart= new FusionCharts("../fusioncharts/Column2D.swf", Ext.Date.format(new Date(),'YmdHis'), "1000", "300", "0", "0");
+             			break;
+             		case "2" :
+             		   chart = new FusionCharts("../fusioncharts/MSColumn3D.swf", Ext.Date.format(new Date(),'YmdHis'), "1000", "300", "0", "0");
+             			break;
+             		case "3" :
+             		  chart = new FusionCharts("../fusioncharts/MSLine.swf", Ext.Date.format(new Date(),'YmdHis'), "1000", "300", "0", "0");   	
+             			break;
+             		case "4" :
+             			chart = new FusionCharts("../fusioncharts/Pie3D.swf", Ext.Date.format(new Date(),'YmdHis'), "1000", "300", "0", "0");
+             			break;
+             		case "18" :
+             			chart = new FusionCharts("../fusioncharts/MSColumn3DLineDY.swf", Ext.Date.format(new Date(),'YmdHis'), "1000", "300", "0", "0");
+             			break;
+             	}
+             	chart.setJSONData(graphData);
+                chart.render('myChart');
 			},
 			failure : function(response, options) {
 				Ext.MessageBox.alert('提示', '查询失败!');
